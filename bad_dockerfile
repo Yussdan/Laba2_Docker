@@ -1,0 +1,8 @@
+FROM python:latest
+
+RUN apt-get update && apt-get install -y package1 && \
+    wget http://example.com/file.tar.gz && \
+    tar -xzf file.tar.gz && \
+    rm file.tar.gz
+
+ENV DB_PASSWORD=mysecretpassword

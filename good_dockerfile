@@ -1,0 +1,22 @@
+# Используем конкретную версию Python вместо latest
+FROM python:3.9-slim
+
+# Устанавливаем зависимости Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Устанавливаем системные зависимости
+RUN apt-get update && apt-get install -y \
+    package1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Загружаем и распаковываем файл
+RUN wget http://example.com/file.tar.gz \
+    && tar -xzf file.tar.gz \
+    && rm file.tar.gz
+
+# Используем переменные окружения для секретов (передаются при запуске контейнера)
+ENV DB_PASSWORD=""
+
+# Указываем команду для запуска приложения
+CMD ["python", "app.py"]

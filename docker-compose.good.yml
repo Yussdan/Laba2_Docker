@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  web:
+    image: nginx:1.25              # ✅ Используем фиксированную версию образа
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_MODE=production
+    env_file:
+      - .env                        # ✅ Загружаем секретные переменные из .env
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped         # ✅ Контейнер перезапустится, если произошёл сбой
+
+  db:
+    image: postgres:15.3            # ✅ Фиксированная версия Postgres
+    container_name: postgres_db
+    env_file:
+      - .env                        # ✅ Загружаем переменные из .env, а не хардкодим
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always                  # ✅ База данных всегда перезапускается при сбоях
+
+volumes:
+  pg_data:    

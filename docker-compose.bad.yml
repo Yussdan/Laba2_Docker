@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    image: nginx:latest # ❌ Использование тега "latest"
+    container_name: bad_nginx
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_MODE=production
+      - SECRET_KEY=SuperSecretKey123   # ❌ Хардкод конфиденциальных данных (секретный ключ)
+
+  db:
+    image: postgres:latest            # ❌ Использование тега "latest"
+    container_name: bad_postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123     # ❌ Хардкод пароля БД
+      - POSTGRES_DB=app_db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    # ❌ Отсутствует настройка политики перезапуска (например, restart: always)
